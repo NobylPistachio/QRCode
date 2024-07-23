@@ -47,7 +47,7 @@ def generate_qrcode():
     def save_qr():
         file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png")])
         if file_path:
-            qr.save(file_path)
+            qr.save(file_path, scale=10)
             messagebox.showinfo("Saved", "QR Code saved successfully")
 
     download_button.config(command=save_qr)
@@ -154,13 +154,3 @@ download_button.pack(pady=10)
 
 app.mainloop()
 
-generate_button = tk.Button(app, text="Generate QR Code", command=generate_qrcode)
-generate_button.pack(pady=10)
-
-qr_label = tk.Label(app)
-qr_label.pack(pady=10)
-
-download_button = tk.Button(app, text="Download QR Code")
-download_button.pack(pady=10)
-
-app.mainloop()
