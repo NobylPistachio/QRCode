@@ -27,6 +27,11 @@ def generate_qrcode():
         phone = mecard_phone_entry.get()
         email = mecard_email_entry.get()
         qr = helpers.make_mecard(name=name, phone=phone, email=email)
+    elif qrcode_type == "Wifi":
+        ssid = wifi_ssid_entry.get()
+        password = wifi_password_entry.get()
+        security = wifi_security_var.get()
+        qr = helpers.make_wifi(ssid=ssid, password=password, security=security)
     else:
         messagebox.showerror("Error", "Please select a QR code type")
         return
@@ -78,6 +83,13 @@ def update_ui():
         mecard_phone_entry.grid(row=1, column=1, padx=5, pady=5)
         mecard_email_label.grid(row=2, column=0, padx=5, pady=5)
         mecard_email_entry.grid(row=2, column=1, padx=5, pady=5)
+    elif qrcode_type == "Wifi":
+        wifi_ssid_label.grid(row=0, column=0, padx=5, pady=5)
+        wifi_ssid_entry.grid(row=0, column=1, padx=5, pady=5)
+        wifi_password_label.grid(row=1, column=0, padx=5, pady=5)
+        wifi_password_entry.grid(row=1, column=1, padx=5, pady=5)
+        wifi_security_label.grid(row=2, column=0, padx=5, pady=5)
+        wifi_security_var.grid(row=2, column=1, padx=5, pady=5)
 
 app = tk.Tk()
 app.title("QR Code Maker")
@@ -92,6 +104,7 @@ tk.Radiobutton(types_frame, text="URL", variable=qrcode_type_var, value="URL", c
 tk.Radiobutton(types_frame, text="Email", variable=qrcode_type_var, value="Email", command=update_ui).pack(anchor='w')
 tk.Radiobutton(types_frame, text="GEO", variable=qrcode_type_var, value="GEO", command=update_ui).pack(anchor='w')
 tk.Radiobutton(types_frame, text="Mecard", variable=qrcode_type_var, value="Mecard", command=update_ui).pack(anchor='w')
+tk.Radiobutton(types_frame, text="Wifi", variable=qrcode_type_var, value="Wifi", command=update_ui).pack(anchor='w')
 
 input_frame = tk.Frame(app)
 input_frame.pack(pady=10)
@@ -121,6 +134,25 @@ mecard_phone_label = tk.Label(input_frame, text="Phone:")
 mecard_phone_entry = tk.Entry(input_frame)
 mecard_email_label = tk.Label(input_frame, text="Email:")
 mecard_email_entry = tk.Entry(input_frame)
+
+wifi_ssid_label = tk.Label(input_frame, text="SSID:")
+wifi_ssid_entry = tk.Entry(input_frame)
+wifi_password_label = tk.Label(input_frame, text="Password:")
+wifi_password_entry = tk.Entry(input_frame)
+wifi_security_label = tk.Label(input_frame, text="Security:")
+wifi_security_var = ttk.Combobox(input_frame, values=["WPA", "WEP", "nopass"])
+wifi_security_var.set("WPA")
+
+generate_button = tk.Button(app, text="Generate QR Code", command=generate_qrcode)
+generate_button.pack(pady=10)
+
+qr_label = tk.Label(app)
+qr_label.pack(pady=10)
+
+download_button = tk.Button(app, text="Download QR Code")
+download_button.pack(pady=10)
+
+app.mainloop()
 
 generate_button = tk.Button(app, text="Generate QR Code", command=generate_qrcode)
 generate_button.pack(pady=10)
